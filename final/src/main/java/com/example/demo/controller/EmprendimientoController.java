@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 
+import com.example.demo.dto.OperacionEmprendimiento;
 import com.example.demo.entity.Emprendimiento;
 import com.example.demo.entity.Usuario;
 import com.example.demo.repository.EmprendimientoRepository;
@@ -17,17 +18,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/emprendimiento")
 public class EmprendimientoController {
-    private UsuarioRepository usuarioRepository;
+
     private EmprendimientoService emprendimientoService;
     private EmprendimientoRepository emprendimientoRepository;
 
     @Autowired
     public EmprendimientoController(EmprendimientoRepository emprendimientoRepository,
-            EmprendimientoService emprendimientoService,
-            UsuarioRepository usuarioRepository) {
+            EmprendimientoService emprendimientoService) {
     this.emprendimientoRepository = emprendimientoRepository;
     this.emprendimientoService = emprendimientoService;
-    this.usuarioRepository = usuarioRepository;
     }
 
     @GetMapping("/emprendimientos")
@@ -35,26 +34,9 @@ public class EmprendimientoController {
     return new ResponseEntity<>(emprendimientoRepository.findAll(), HttpStatus.OK);
     }
 
-    @PostMapping("/usuarios/{id}/emprendimientos")
-    public ResponseEntity<?> crearEmprendimiento(@PathVariable("id") Long id,
-    @RequestBody @Valid Emprendimiento emprendimiento) {
-    Usuario usuario = usuarioRepository
-    .findById(id)
-    .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
-    usuario.getEmprendimiento().add(emprendimiento);
-    emprendimiento.setUsuario(usuario);
-    return new ResponseEntity<>(usuarioRepository.save(usuario), HttpStatus.CREATED);
-    }
-
-    @PostMapping("/usuarios/{id}/emprendimientos")
-    public ResponseEntity<?> crearEmp(@PathVariable("id") Long id,
-                                                 @RequestBody @Valid Emprendimiento emprendimiento) {
-        Usuario usuario = usuarioRepository
-                .findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
-        usuario.getEmprendimiento().add(emprendimiento);
-        emprendimiento.setUsuario(usuario);
-        return new ResponseEntity<>(usuarioRepository.save(usuario), HttpStatus.CREATED);
+    @PostMapping
+    public ResponseEntity<?> crearEmrprendimiento(@Valid @RequestBody OperacionEmprendimiento operacionEmprendimiento) {
+        return new ResponseEntity<>(emprendimientoService.crearEmrprendimiento(operacionEmprendimiento), HttpStatus.CREATED);
     }
 
 
@@ -78,7 +60,7 @@ public class EmprendimientoController {
     emprendimientoE.setPublicado(emprendimiento.getPublicado());
     emprendimientoE.setUrl(emprendimiento.getUrl());
     emprendimientoE.setTags(emprendimiento.getTags());
-    emprendimientoE.setActivo(emprendimiento.getActivo());
+    emprendimientoE.setPublicado(emprendimiento.getPublicado());
     return new ResponseEntity<>(emprendimientoRepository.save(emprendimientoE), HttpStatus.OK);
     }
 
@@ -91,6 +73,8 @@ public class EmprendimientoController {
     @GetMapping(value = "/emprendimientos", params = "publicado")
         public ResponseEntity<?> filtrarNoPublicados(@RequestParam Boolean publicado) {
     return new ResponseEntity<>(emprendimientoRepository.getByPublicado(publicado), HttpStatus.OK);
-
     }
 }
+
+
+

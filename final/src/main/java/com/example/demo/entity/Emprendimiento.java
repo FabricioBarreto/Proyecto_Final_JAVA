@@ -2,145 +2,74 @@ package com.example.demo.entity;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name = "emprendimientos")
+@Getter @Setter @ToString
 public class Emprendimiento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
+    @NotEmpty(message = "El campo nombre no puede estar vacio")
+    @Size(min = 2, max = 255)
     private String nombre;
+
+    @NotEmpty(message = "El campo descripcion no puede estar vacio")
+    @Size(min = 2, max = 255)
     private String descripcion;
+
+    @NotEmpty(message = "El campo contenido no puede estar vacio")
+    @Size(min = 2, max = 255)
     private String contenido;
+
     @CreationTimestamp
     @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate fechaDeCreacion;
+
+    @Min(value = 0)
     private Long objetivo;
+
     private Boolean publicado;
+
     private String url;
-    private Boolean activo;
-   
-    @JsonIgnore
+
+    // Relaciones
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Usuario owner;
 
-    public Emprendimiento() {
-    }
-
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
-            name = "emprendimiento_id",
+            name = "emprendimineto_id",
             joinColumns = @JoinColumn(name = "emprendimiento_id"),
-            inverseJoinColumns = @JoinColumn(name = "tags_id"))
+            inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private List<Tag> tags = new ArrayList<>();
 
+    @JsonIgnore
+    @ManyToMany(mappedBy = "suscriptores")
+    private List<Evento> eventos = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Evento evento;
 
-    public Long getId() {
-        return Id;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Voto voto;
 
-    public void setId(Long id) {
-        Id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public String getContenido() {
-        return contenido;
-    }
-
-    public void setContenido(String contenido) {
-        this.contenido = contenido;
-    }
-
-    public LocalDate getFechaDeCreacion() {
-        return fechaDeCreacion;
-    }
-
-    public void setFechaDeCreacion(LocalDate fechaDeCreacion) {
-        this.fechaDeCreacion = fechaDeCreacion;
-    }
-
-    public Long getObjetivo() {
-        return objetivo;
-    }
-
-    public void setObjetivo(Long objetivo) {
-        this.objetivo = objetivo;
-    }
-
-    public Boolean getPublicado() {
-        return publicado;
-    }
-
-    public void setPublicado(Boolean publicado) {
-        this.publicado = publicado;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public Boolean getActivo() {
-        return activo;
-    }
-
-    public void setActivo(Boolean activo) {this.activo = activo;}
-
-    public Usuario getUsuario() {
-        return owner;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.owner = usuario;
-    }
-
-    public void setOwner(Usuario usuario) {
-    }
-
-    public void agregarTag(Tag tag){
-        tag.add(tag);
-        tag.getEmprendimientos().add(this);
-    }
-
-    public void removerTag(Tag tag){
-        tags.remove(tag);
-        tag.getEmprendimientos().remove(null);
-    }
-
-    public List<Tag> getTags(){
-        return tags;
-    }
-    public void setTags(List tags) {
-        this.tags = tags;
-    }
 }

@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class VotoController {
+
+    /*
+
     @Autowired
     private UsuarioRepository usuarioRepository;
     private VotoRepository votoRepository;
@@ -53,4 +56,6 @@ public class VotoController {
 
         return new ResponseEntity<>(votoRepository.findByUsuario(usuario), HttpStatus.OK);
     }
+
+     */
 }
