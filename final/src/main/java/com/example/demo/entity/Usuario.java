@@ -53,8 +53,7 @@ public class Usuario {
 
     @NotEmpty(message = "El campo pais no puede estar vacio")
     private String país;
-
-    @NotNull
+    
     @Enumerated(value = EnumType.STRING)
     private Tipo tipo;
 

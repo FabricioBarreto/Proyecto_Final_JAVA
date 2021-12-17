@@ -11,15 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class EmprendimientoService {
 
-
+/*
     private final EmprendimientoRepository emprendimientoRepository;
     private final UsuarioRepository usuarioRepository;
     private final TagRepository tagRepository;
@@ -45,4 +43,6 @@ public class EmprendimientoService {
 
         return emprendimientoRepository.save(emprendimiento);
     }
+
+ */
 }

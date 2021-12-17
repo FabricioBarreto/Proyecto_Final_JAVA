@@ -6,7 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface EmprendimientoRepository extends CrudRepository<Emprendimiento, Long> {
-    List<Emprendimiento> findByUsuario(Long Id);
     List<Emprendimiento> getByTags(String emprendimientosAFiltrar);
     List<Emprendimiento> getByPublicado(Boolean emprendimientosAFiltrar );
     

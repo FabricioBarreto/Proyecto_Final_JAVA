@@ -5,9 +5,7 @@ import javax.validation.Valid;
 
 import com.example.demo.dto.OperacionEmprendimiento;
 import com.example.demo.entity.Emprendimiento;
-import com.example.demo.entity.Usuario;
 import com.example.demo.repository.EmprendimientoRepository;
-import com.example.demo.repository.UsuarioRepository;
 import com.example.demo.service.EmprendimientoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -18,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/emprendimiento")
 public class EmprendimientoController {
-
+/*
     private EmprendimientoService emprendimientoService;
     private EmprendimientoRepository emprendimientoRepository;
 
@@ -74,6 +72,8 @@ public class EmprendimientoController {
         public ResponseEntity<?> filtrarNoPublicados(@RequestParam Boolean publicado) {
     return new ResponseEntity<>(emprendimientoRepository.getByPublicado(publicado), HttpStatus.OK);
     }
+
+ */
 }
 
 
