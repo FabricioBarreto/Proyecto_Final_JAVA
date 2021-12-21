@@ -1,61 +1,37 @@
 package com.example.demo.controller;
 
-import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
-import javax.validation.Valid;
-
-import com.example.demo.entity.Usuario;
 import com.example.demo.entity.Voto;
-import com.example.demo.repository.UsuarioRepository;
 import com.example.demo.repository.VotoRepository;
+import com.example.demo.service.UsuarioService;
+import com.example.demo.service.VotoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 @RestController
 public class VotoController {
 
-    /*
-
     @Autowired
-    private UsuarioRepository usuarioRepository;
-    private VotoRepository votoRepository;
+    private final UsuarioService usuarioService;
+    private final VotoRepository votoRepository;
+    private final VotoService votoService;
 
-
-    public VotoController(UsuarioRepository usuarioRepository, VotoRepository votoRepository) {
-        this.usuarioRepository = usuarioRepository;
+    public VotoController(UsuarioService usuarioService, VotoRepository votoRepository, VotoService votoService) {
+        this.usuarioService = usuarioService;
         this.votoRepository = votoRepository;
+        this.votoService = votoService;
     }
 
-    @GetMapping("/votos")
-    public ResponseEntity<?> buscar() {
-        return new ResponseEntity<>(votoRepository.findAll(), HttpStatus.OK);
-    }
 
     @Transactional
-    @PostMapping("/usuarios/{id}/votos")
-    public ResponseEntity<?> crear(@PathVariable("id") Long id,
-            @RequestBody @Valid Voto voto) {
-        Usuario usuario = usuarioRepository
-                .findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
-        usuario.getVotos().add(voto);
-        voto.setUsuario(usuario);
-
-        return new ResponseEntity<>(usuarioRepository.save(usuario), HttpStatus.CREATED);
+    @PostMapping("/usuarios/{usuarioId}/{emprendimientoId}")
+    public ResponseEntity<?> crearVoto(@PathVariable("usuarioId") Long usuarioId,@PathVariable("emrendimientoId")Long emprendimientoId,
+                                       @RequestBody @Valid Voto voto) {
+        return new ResponseEntity<>(votoService.crearVoto(usuarioId,emprendimientoId), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/votos", params = "usuario")
-    public ResponseEntity<?> votosAFiltrar(@RequestParam Usuario usuario) {
-
-        return new ResponseEntity<>(votoRepository.findByUsuario(usuario), HttpStatus.OK);
-    }
-
-     */
 }

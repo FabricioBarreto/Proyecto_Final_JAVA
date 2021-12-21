@@ -1,75 +1,69 @@
 package com.example.demo.entity;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 
+import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.*;
+
 @Entity
-@Table(name = "emprendimientos")
-@Getter @Setter @ToString
+@ToString
+@Getter @Setter
 public class Emprendimiento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
-
-    @NotEmpty(message = "El campo nombre no puede estar vacio")
-    @Size(min = 2, max = 255)
+    private Long id;
     private String nombre;
-
-    @NotEmpty(message = "El campo descripcion no puede estar vacio")
-    @Size(min = 2, max = 255)
     private String descripcion;
-
-    @NotEmpty(message = "El campo contenido no puede estar vacio")
-    @Size(min = 2, max = 255)
     private String contenido;
 
     @CreationTimestamp
-    @JsonFormat(pattern = "dd-MM-yyyy")
-    private LocalDate fechaDeCreacion;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate fechaCreacion;
 
-    @Min(value = 0)
-    private Long objetivo;
+    private double objetivo;
 
-    private Boolean publicado;
+    private boolean publicado;
 
     private String url;
 
-    // Relaciones
-
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Usuario owner;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(
-            name = "emprendimineto_id",
-            joinColumns = @JoinColumn(name = "emprendimiento_id"),
-            inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Tag> tags = new ArrayList<>();
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "suscriptores")
+    @ManyToMany (mappedBy = "emprendimientosSuscriptos")
     private List<Evento> eventos = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Evento evento;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @OneToMany(mappedBy = "emprendimiento", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Voto> votos = new ArrayList<>();
+    private Integer cantidadDeVotos = 0;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Voto voto;
+    public Long getCreador() {
+        return owner.getId();
+    }
+
+    public int cantidadDeVotos() {
+        return votos.size();
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void agregarTag(Tag tag){
+        tags.add(tag);
+        tag.getEmprendimientos().add(this);
+    }
 
 }

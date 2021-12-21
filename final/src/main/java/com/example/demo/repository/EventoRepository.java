@@ -2,12 +2,14 @@ package com.example.demo.repository;
 
 
 import com.example.demo.entity.Evento;
-import com.example.demo.entity.Usuario;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface EventoRepository extends CrudRepository<Evento, Long> {
-        List<Evento> findAllById(Long Id);
+@Repository
+public interface EventoRepository extends JpaRepository<Evento, Long> {
+
 }
 
