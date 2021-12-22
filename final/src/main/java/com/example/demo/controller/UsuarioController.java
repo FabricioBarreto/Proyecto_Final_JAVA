@@ -19,7 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping(value = "/usuarios")
 public class UsuarioController{
 
     private final UsuarioRepository usuarioRepository;
@@ -41,15 +41,15 @@ public class UsuarioController{
     // Listar todos los usuarios
     @GetMapping
     public ResponseEntity<?> obtenerTodos(){
-            return new ResponseEntity<>(usuarioRepository.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(usuarioRepository.findAll(), HttpStatus.OK);
     }
 
     // Modificar usuario
-    @PutMapping (value = "/id/{usuarioId}")
+    @PutMapping (value = "/{usuarioId}/{activar}/{emprendimientoId}")
     public Usuario modificarUsuario (@PathVariable("usuarioId") Long usuarioId,
-                                      @RequestBody @Valid Usuario usuarioRecibido,
-                                      @RequestParam(name = "emprendimiento", required = false)Long empId,
-                                      @RequestParam(name = "activacion", required = true)boolean activacion) {
+                                    @PathVariable(name = "emprendimientoId")Long empId,
+                                     @PathVariable boolean activar,
+                                     @RequestBody @Valid Usuario usuarioRecibido) {
         Usuario usuario = usuarioRepository.findById(usuarioId)
                 .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
         usuario.setNombre(usuarioRecibido.getNombre());
@@ -57,7 +57,7 @@ public class UsuarioController{
         usuario.setCiudad(usuarioRecibido.getCiudad());
         usuario.setProvincia(usuarioRecibido.getProvincia());
         usuario.setPais(usuarioRecibido.getPais());
-        usuario.setActivo(activacion);
+        usuario.setActivo(activar);
         if (empId != null) {
             Emprendimiento emprendimiento = emprendimientoRepository.findById(empId)
                     .orElseThrow(() -> new EntityNotFoundException("Emprendimiemto no encontrado"));
@@ -76,13 +76,13 @@ public class UsuarioController{
         }
     }
 
-    @GetMapping (value = "/ciudad/{ciudad}")
-    public ResponseEntity<?> buscarPorCiudad (@PathVariable("ciudad") String ciudadABuscar){
-        return new ResponseEntity<>(usuarioRepository.findByCiudad(ciudadABuscar), HttpStatus.OK);
+    @GetMapping (value = "/{ciudad}")
+    public ResponseEntity<?> buscarPorCiudad (@PathVariable String ciudad){
+        return new ResponseEntity<>(usuarioRepository.findByCiudad(ciudad), HttpStatus.OK);
     }
 
-    @GetMapping (value = "/fecha/{fecha}")
-    public ResponseEntity<?> buscarPorFecha (@PathVariable("fecha")String fecha){
+    @GetMapping (value = "/{fecha}")
+    public ResponseEntity<?> buscarPorFecha (@PathVariable String fecha){
         LocalDateTime fechaABuscar = LocalDateTime.parse(fecha);
         List<Usuario> listaDeUsuarios = usuarioRepository.findAll();
         List<Usuario> listaFiltrada = listaDeUsuarios.stream()

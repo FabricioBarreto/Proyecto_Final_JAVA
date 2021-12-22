@@ -4,7 +4,6 @@ import com.example.demo.entity.Emprendimiento;
 import com.example.demo.entity.Evento;
 import com.example.demo.repository.EmprendimientoRepository;
 import com.example.demo.repository.EventoRepository;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +12,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/emprendimientos")
+@RequestMapping(value = "/emprendimientos")
 public class EmprendimientoController {
 
     private final EmprendimientoRepository emprendimientoRepository;
@@ -32,7 +31,7 @@ public class EmprendimientoController {
     @GetMapping
     public ResponseEntity<?> mostrarEmorendimientos(
             @RequestParam(name = "tag", required = false)String tag,
-            @RequestParam(name = "publicado", required = false, defaultValue = "true")boolean publicado){
+            @RequestParam(name = "publicado", required = false, defaultValue = "false")boolean publicado){
         if (tag != null){
             return new ResponseEntity<>(emprendimientoRepository.findByTag(tag), HttpStatus.OK);
         }else if (!publicado){
@@ -70,6 +69,3 @@ public class EmprendimientoController {
         emprendimientoRepository.save(emprendimiento);
     }
 }
-
-
-

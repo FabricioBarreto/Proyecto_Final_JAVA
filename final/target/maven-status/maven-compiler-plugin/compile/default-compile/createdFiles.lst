@@ -1,9 +1,8 @@
 com\example\demo\entity\Emprendimiento.class
 com\example\demo\entity\VotoEnum.class
-com\example\demo\FinalApplication.class
 com\example\demo\entity\Usuario.class
 com\example\demo\entity\Evento.class
-com\example\demo\controller\VotoController.class
+com\example\demo\FinalJavaApplication.class
 com\example\demo\repository\TagRepository.class
 com\example\demo\entity\Tag.class
 com\example\demo\entity\UsuarioEnum.class
@@ -12,7 +11,6 @@ com\example\demo\controller\EventoController.class
 com\example\demo\controller\UsuarioController.class
 com\example\demo\entity\EventoEnum.class
 com\example\demo\repository\EventoRepository.class
-com\example\demo\service\VotoService.class
 com\example\demo\controller\EmprendimientoController.class
 com\example\demo\entity\Voto.class
 com\example\demo\repository\EmprendimientoRepository.class

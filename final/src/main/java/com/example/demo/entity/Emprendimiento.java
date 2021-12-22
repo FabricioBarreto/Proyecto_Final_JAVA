@@ -49,7 +49,7 @@ public class Emprendimiento {
     private List<Voto> votos = new ArrayList<>();
     private Integer cantidadDeVotos = 0;
 
-    public Long getCreador() {
+    public Long getOwner() {
         return owner.getId();
     }
 

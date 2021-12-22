@@ -16,5 +16,5 @@ public class Tag {
     private String tagNombre;
 
     @ManyToMany(mappedBy = "tags")
-    private List<Emprendimiento> emprendimientos = new ArrayList<>();
+    private List<com.example.demo.entity.Emprendimiento> emprendimientos = new ArrayList<>();
 }

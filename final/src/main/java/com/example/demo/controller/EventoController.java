@@ -1,8 +1,14 @@
 package com.example.demo.controller;
 
+
 import com.example.demo.entity.Emprendimiento;
 import com.example.demo.entity.Evento;
+import com.example.demo.entity.Usuario;
+import com.example.demo.entity.Voto;
+import com.example.demo.repository.EmprendimientoRepository;
 import com.example.demo.repository.EventoRepository;
+import com.example.demo.repository.UsuarioRepository;
+import com.example.demo.repository.VotoRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,14 +21,21 @@ import java.util.stream.Collectors;
 
 
 @RestController
-@RequestMapping("/eventos")
+@RequestMapping(value = "/eventos")
 public class EventoController {
 
     private final EventoRepository eventoRepository;
+    private final VotoRepository votoRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final EmprendimientoRepository emprendimientoRepository;
 
-    public EventoController(EventoRepository eventoRepository) {
+    public EventoController(EventoRepository eventoRepository, VotoRepository votoRepository, UsuarioRepository usuarioRepository, EmprendimientoRepository emprendimientoRepository) {
         this.eventoRepository = eventoRepository;
+        this.votoRepository = votoRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.emprendimientoRepository = emprendimientoRepository;
     }
+
 
     @PostMapping
     public ResponseEntity<?> crearEvento(@RequestBody @Valid Evento evento){
@@ -53,8 +66,22 @@ public class EventoController {
         evento.setActivo(false);
     }
 
-    @GetMapping("/ranking/{id}")
-    public List<Emprendimiento>  ranking(@RequestParam(name = "id", required = true)Long id){
+    @PostMapping (value = "votar/{usuaarioId}/{empId}")
+    public ResponseEntity<?> votar(@PathVariable ("empId") Long empId,
+                                   @PathVariable ("usuaarioId")Long usuaarioId,
+                                   @RequestBody @Valid Voto voto){
+        Emprendimiento emprendimiento = emprendimientoRepository.findById(empId)
+                .orElseThrow(()-> new EntityNotFoundException("Emprendimiento no encontrado"));
+        Usuario usuario = usuarioRepository.findById(usuaarioId)
+                .orElseThrow(()-> new EntityNotFoundException("Usuario no encontrado"));
+        voto.setVotante(usuario);
+        voto.setEmprendimiento(emprendimiento);
+        emprendimiento.setCantidadDeVotos(emprendimiento.getCantidadDeVotos()+1);
+        return new ResponseEntity<>(votoRepository.save(voto), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}/ranking")
+    public List<Emprendimiento> ranking(@PathVariable("id")Long id){
         Evento evento = eventoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Evento no encontrado"));
         List<Emprendimiento> emprendimientos = evento.getEmprendimientosSubscriptos();
@@ -66,3 +93,4 @@ public class EventoController {
         return emprenimientosOrdenados;
     }
 }
+

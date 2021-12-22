@@ -6,6 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     List<Usuario> findByCiudad(String ciudad);
-    List<Usuario> findByActivo(boolean activo);
 }
 

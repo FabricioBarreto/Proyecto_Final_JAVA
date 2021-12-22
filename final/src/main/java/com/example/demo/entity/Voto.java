@@ -1,6 +1,5 @@
 package com.example.demo.entity;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.persistence.*;
@@ -28,9 +27,9 @@ public class Voto {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    private Usuario votante;
+    private com.example.demo.entity.Usuario votante;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Emprendimiento emprendimiento;
+    private com.example.demo.entity.Emprendimiento emprendimiento;
 }
