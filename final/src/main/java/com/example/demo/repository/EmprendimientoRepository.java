@@ -11,7 +11,8 @@ import java.util.List;
 
 @Repository
 public interface EmprendimientoRepository extends JpaRepository<Emprendimiento, Long> {
-    @Query("SELECT e FROM Emprendimiento e join fetch e.tags t WHERE t.tagNmbre LIKE %:tag%")
+    @Query("SELECT e FROM Emprendimiento e join fetch e.tags t WHERE t.tagNombre LIKE %:tag%")
     List<Emprendimiento> findByTag(@Param("tag") String tag);
-    List<Emprendimiento> findByPublicado(boolean publicado );
+    List<Emprendimiento> findByPublicado(boolean publicado);
+    List<Emprendimiento>findByActivo(boolean activo);
 }

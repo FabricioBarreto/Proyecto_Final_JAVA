@@ -4,10 +4,9 @@ C:\Users\BEBY BARROSO\Desktop\fabricio\final\src\main\java\com\example\demo\repo
 C:\Users\BEBY BARROSO\Desktop\fabricio\final\src\main\java\com\example\demo\repository\EmprendimientoRepository.java
 C:\Users\BEBY BARROSO\Desktop\fabricio\final\src\main\java\com\example\demo\controller\EventoController.java
 C:\Users\BEBY BARROSO\Desktop\fabricio\final\src\main\java\com\example\demo\entity\Tag.java
-C:\Users\BEBY BARROSO\Desktop\fabricio\final\src\main\java\com\example\demo\service\EventoService.java
 C:\Users\BEBY BARROSO\Desktop\fabricio\final\src\main\java\com\example\demo\controller\VotoController.java
 C:\Users\BEBY BARROSO\Desktop\fabricio\final\src\main\java\com\example\demo\entity\Voto.java
-C:\Users\BEBY BARROSO\Desktop\fabricio\final\src\main\java\com\example\demo\service\EmprendimientoService.java
+C:\Users\BEBY BARROSO\Desktop\fabricio\final\src\main\java\com\example\demo\repository\TagRepository.java
 C:\Users\BEBY BARROSO\Desktop\fabricio\final\src\main\java\com\example\demo\controller\EmprendimientoController.java
 C:\Users\BEBY BARROSO\Desktop\fabricio\final\src\main\java\com\example\demo\entity\Emprendimiento.java
 C:\Users\BEBY BARROSO\Desktop\fabricio\final\src\main\java\com\example\demo\entity\EventoEnum.java
@@ -16,7 +15,5 @@ C:\Users\BEBY BARROSO\Desktop\fabricio\final\src\main\java\com\example\demo\enti
 C:\Users\BEBY BARROSO\Desktop\fabricio\final\src\main\java\com\example\demo\entity\Evento.java
 C:\Users\BEBY BARROSO\Desktop\fabricio\final\src\main\java\com\example\demo\repository\EventoRepository.java
 C:\Users\BEBY BARROSO\Desktop\fabricio\final\src\main\java\com\example\demo\service\VotoService.java
-C:\Users\BEBY BARROSO\Desktop\fabricio\final\src\main\java\com\example\demo\AppController.java
 C:\Users\BEBY BARROSO\Desktop\fabricio\final\src\main\java\com\example\demo\repository\VotoRepository.java
-C:\Users\BEBY BARROSO\Desktop\fabricio\final\src\main\java\com\example\demo\service\UsuarioService.java
 C:\Users\BEBY BARROSO\Desktop\fabricio\final\src\main\java\com\example\demo\FinalApplication.java

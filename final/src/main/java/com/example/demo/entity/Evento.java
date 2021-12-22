@@ -1,6 +1,8 @@
 package com.example.demo.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,36 +26,37 @@ public class Evento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
     private String nombre;
+
     private String detalle;
 
     @CreationTimestamp
     @JsonFormat(pattern = "dd-MM-yyyy")
-    private LocalDate fechaDeCreacion;
+    private LocalDateTime fechaDeCreacion;
 
     @JsonFormat(pattern = "dd-MM-yyyy")
-    private LocalDate CierreDeRegistro;
+    private LocalDateTime CierreDeRegistro;
 
     @JsonFormat(pattern = "dd-MM-yyyy")
-    private LocalDate fechaDeCierre;
+    private LocalDateTime fechaDeCierre;
 
-    private Double premio;
+    private BigDecimal premio;
 
     @Enumerated(value = EnumType.STRING)
     private EventoEnum estado = EventoEnum.ABIERTO;
 
+    private boolean activo= false;
+
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
     @OrderBy("cantidadDeVotos DESC")
-    private List<Emprendimiento> emprendimientosSuscriptos = new ArrayList<>();
+    private List<Emprendimiento> emprendimientosSubscriptos = new ArrayList<>();
 
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Usuario creador;
 
     public void agregarSubscriptor(Emprendimiento subscriptor){
-        emprendimientosSuscriptos.add(subscriptor);
+        emprendimientosSubscriptos.add(subscriptor);
         subscriptor.getEventos().add(this);
     }
-
 }

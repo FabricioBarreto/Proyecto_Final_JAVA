@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.*;
 
@@ -18,14 +19,15 @@ public class Voto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private VotoEnum votoEnum;
 
     @CreationTimestamp
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate fechaCreacion;
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    private LocalDateTime fechaCreacion;
 
     @JsonIgnore
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Usuario votante;
 
     @JsonIgnore

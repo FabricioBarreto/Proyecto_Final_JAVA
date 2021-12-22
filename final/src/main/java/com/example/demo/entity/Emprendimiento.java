@@ -5,15 +5,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
-@ToString
 @Getter @Setter
 public class Emprendimiento {
 
@@ -26,7 +24,7 @@ public class Emprendimiento {
 
     @CreationTimestamp
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate fechaCreacion;
+    private LocalDateTime fechaCreacion;
 
     private double objetivo;
 
@@ -38,10 +36,12 @@ public class Emprendimiento {
     @ManyToOne(fetch = FetchType.LAZY)
     private Usuario owner;
 
+    private boolean activo = false;
+
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Tag> tags = new ArrayList<>();
 
-    @ManyToMany (mappedBy = "emprendimientosSuscriptos")
+    @ManyToMany (mappedBy = "emprendimientosSubscriptos")
     private List<Evento> eventos = new ArrayList<>();
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -53,12 +53,13 @@ public class Emprendimiento {
         return owner.getId();
     }
 
-    public int cantidadDeVotos() {
-        return votos.size();
+    public void setVoto(Voto voto) {
+        votos.add(voto);
+        voto.setEmprendimiento(this);
     }
 
-    public List<Tag> getTags() {
-        return tags;
+    public int cantidadDeVotos() {
+        return votos.size();
     }
 
     public void agregarTag(Tag tag){

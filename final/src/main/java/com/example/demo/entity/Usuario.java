@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
 @Entity
 @Getter @Setter
@@ -25,24 +24,22 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Email(regexp = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$")
-    @NotEmpty(message = "El campo username no puede estar vacio")
-    private String email;
-
-    @NotEmpty(message = "El campo password no puede estar vacio")
-    @Getter(onMethod = @__(@JsonIgnore))
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String password;
-
-    @Enumerated(value = EnumType.STRING)
-    private UsuarioEnum usuarioEnum;
-    private boolean activo = true;
-
     @NotEmpty(message = "El campo nombre no puede estar vacio")
     private String nombre;
 
     @NotEmpty(message = "El campo nombre no puede estar vacio")
     private String apellido;
+
+    @Email(regexp = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$")
+    @NotEmpty(message = "El campo username no puede estar vacio")
+    private String email;
+
+    @NotEmpty(message = "El campo password no puede estar vacio")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String password;
+
+    @CreationTimestamp
+    private LocalDateTime fechaCreacion;
 
     private String provincia;
 
@@ -50,9 +47,10 @@ public class Usuario {
 
     private String pais;
 
-    @CreationTimestamp
-    @JsonFormat(pattern = "dd/MM/yyyy")
-    private LocalDate fechaCreacion;
+    @Enumerated(value = EnumType.STRING)
+    private UsuarioEnum usuarioEnum;
+
+    private boolean activo = false;
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "owner", cascade = CascadeType.ALL)
@@ -65,4 +63,9 @@ public class Usuario {
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "votante", cascade = CascadeType.ALL)
     public List<Voto> votos = new ArrayList<>();
+
+    public void setOwner(Emprendimiento emprendimiento) {
+        emprendimientos.add(emprendimiento);
+        emprendimiento.setOwner(this);
+    }
 }
